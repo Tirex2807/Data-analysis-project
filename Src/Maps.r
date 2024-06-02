@@ -5,6 +5,7 @@ library(tidyverse)
 library(RColorBrewer)
 library(rayshader)
 library(eks)
+library(ggthemes)
 
 sf_use_s2(FALSE)
 
@@ -29,7 +30,7 @@ num_colors <- 20  # Adjust as needed
 palette <- color_palette(num_colors)
 elmat <- raster_to_matrix(elevation_France_crop)
 
-#Same 3D version than the previous but with the probability of presence in background
+# 3D plot of all the occurence and probability of presence in background (Kernel Density)
 elmat %>%
  sphere_shade(texture = "bw") %>%
  add_overlay(elevation.texture.map, alphacolor = NULL, alphalayer = 0.9)  %>%
@@ -42,18 +43,22 @@ plot_3d(elmat, zscale = 150, fov = 0, theta = 135, zoom = 0.75,
 render_points(
   extent = extent(France_crop), size = 2,
   lat = gbif_coord$latitude, long = gbif_coord$longitude,
-  altitude = elevation_points + 100, zscale = 150, color = "black"
+  altitude = elevation_points + 100, zscale = 150, color = "blue"
 )
 
-#2D version of the previous plot
-elmat %>%
- sphere_shade(texture = "bw") %>%
- add_overlay(elevation.texture.map, alphacolor = NULL, alphalayer = 0.9)  %>% #alphalayer is the intensity of the background
- add_overlay(generate_polygon_overlay(dataxx, 
-                        palette = palette, linewidth=0,
-                        extent = extent(elevation_France_crop), heightmap = elmat),
-                        alphalayer=0.7)  %>%
-add_overlay(generate_point_overlay(sf_points, color="black", size=5, #change size and color of the points 
-attr(elevation_France_crop,"extent"), heightmap = elmat)) %>%
-plot_map()
+windows()
+
+# Map of the occurence in france for each species
+ggplot(data = France_crop) +
+  geom_sf() +
+  geom_point(data = matrix_full_elev_eco_clim, aes(x = longitude, y = latitude, fill = species), size = 1, 
+             shape = 22) + 
+             theme_solarized() + 
+             theme(axis.text = element_text(color = "blue"), axis.title = element_text(color = "red", face = "bold"),
+  legend.background = element_rect(fill = "lightblue"), legend.title = element_text(face = "italic"),
+  plot.title = element_text(hjust = 0.5, face = "bold", size = 14)) + coord_sf(xlim = c(-5, 10), ylim = c(40, 55)) + 
+  labs(title = "Distribution of Species in France", x = "Longitude", y = "Latitude")
+
+
+
 

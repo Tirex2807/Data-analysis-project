@@ -90,6 +90,8 @@ grid.arrange(histo, histo2, ncol = 2, respect = TRUE)
 # it as a lower amount of observations. 
 # In addition, ladybugs and Myzus persicae are oftenly studied from an agricultural point of view, something that could explain these higher abundance 
 # in cropland compared to the other areas.
+# All the species seems to be more present in Hills and plains compare to tableland and moutains. 
+# Globally they are often found in low elevation ecosystem and observation are made mainly in an agricultarl context.
 
 # Here is plot showing the distribution of the climatic data for each species
 ggplot(matrix_full_elev_eco_clim, aes(x= vec_mean_temp ,fill=factor(species))) +
@@ -117,7 +119,6 @@ ggplot(matrix_full_elev_eco_clim, aes(x= vec_mean_wind ,fill=factor(species))) +
 # but i can't figure out where the problem is so this interpretation is not that useful.
 
 
-
 # Statistical tests
 # Load and clean the dataset
 df <- matrix_full_elev_eco_clim_sat
@@ -139,7 +140,7 @@ my_corplot <- corrplot(mydata.cor, order = 'hclust', addrect = 3) #see correlati
 # This means that, for example, when the elevation increase, the amount of precipitation increase too and the wind speed decrease.
 
 # Give another name more clear
-data_stat <- df_continous
+data_stat <- data_stat <- matrix_full_elev_eco_clim_sat
 
 # Create a scatter plot with a linear regression line
 P1 <- ggplot(data = data_stat, mapping = aes(x = vec_mean_temp, y = vec_mean_precip))
@@ -177,15 +178,15 @@ summary(linear_model3) # Here all parameter are negatively correlated except ele
 anova(linear_model3) # Confirmed
 
 linear_model4 <- lm(NDVI ~ vec_mean_temp + vec_mean_precip + vec_mean_wind + elevation_points, data = data_stat)
-summary(linear_model4) # Here all parameter are negatively correlated except elevation and precip + Significant with P-value for each one
-anova(linear_model4) # Confirmed
+summary(linear_model4) # Here all parameter are negatively correlated except elevation and precip + Significant with P-value for each one except precip
+anova(linear_model4) # Confirmed even for precip
 
 linear_model5 <- lm(elevation_points ~ vec_mean_temp + vec_mean_precip + vec_mean_wind + NDVI, data = data_stat)
 summary(linear_model5) # Here all parameter are negatively correlated except NDVI, precip and wind + Significant with P-value for each one
 anova(linear_model5) # Confirmed
 
 # With all these models, we can have a detailled view of the different correlation. 
-# In fact, all the variables are correlated, something that seems to be normal.
+# In fact, all the variables are correlated, something that seems to be normal in an ecosystem.
 
 lm1 <- aov(vec_mean_temp ~ Landcover, data = data_stat)
 lm2 <- aov(vec_mean_precip ~ Landcover, data = data_stat)
@@ -260,3 +261,55 @@ print(em9)
 em10 <- emmeans(lm10, list(pairwise ~ Landforms), adjust = "tukey")
 print(em10)
 # No difference of density of vegetation between Hills and plains
+
+### PCA
+df_continous <- apply(df_continous,2,as.numeric)
+
+# Now perfom the PCA
+pca_res <- prcomp(df_continous, scale. = TRUE)
+windows()
+# Make a plot of the PCA with the matrix 
+autoplot(pca_res, data =df_discrete, colour = 'species', 
+          shape = "Landcover", 
+         loadings = TRUE, loadings.colour = 'black',
+         loadings.label = TRUE, loadings.label.size = 3, frame = TRUE, frame.type = 'norm') + theme_classic()
+
+autoplot(pca_res, data =df_discrete, colour = 'species',  
+        shape = "Landforms",
+         loadings = TRUE, loadings.colour = 'black',
+         loadings.label = TRUE, loadings.label.size = 3, frame = TRUE, frame.type = 'norm') + theme_classic()
+
+# Interpretation : 
+# In both PCA the ellipses are all overlapping nearly entirely. 
+# This is coherent with the previous results. 
+# All the parameter in Landforms and Landcover are rougly correlated execpt few ones. 
+# With this, we can't distinguishe clear trend in the ecological niches of the species. 
+# They seems to lives all in the sames ecosystems. 
+
+#####################################################################
+######################   FINAL CONCLUSION     #######################
+#####################################################################
+if(FALSE) {
+
+As a final conclusion, it is difficult to identify clear trends. 
+The initial questions was to know if the number of points on the ladybugs would represents their "skills" 
+to predate the Aphids "Myzus persicae". 
+With all the plots and tests, we can see that both in Landocover and in Landforms types, the variables are nearly all correlated.
+This means that we cannot know what is influencing the distribution of the species. 
+With the PCA and the geom_density plots we can see that the curves and ellipses are overlapping. 
+These species seems to be present in the same environmental conditions with very near ecological niches. 
+Potential hypotheses would be that the aphids would be predated by only one of the ladybugs species and the others would predate other species of aphids.
+species of aphid, or the ladybugs would all predate the aphids and be in competition with each other but this is, in my opinion, less possible.
+
+
+Finally, looking at the last map in the "Maps" script, we can see that the obeservations are mainly around the Paris region. 
+This is creeating an overrepresentation of the species at this place compared to the other region in France. 
+However, we can see that all the species are widely distributed at the same places. 
+This confirms the previous plots and the PCA showing that they live in the same places. 
+
+
+To come back to the initial hypothesis, with our results we can not give a clear answer. 
+Any of our results can confirm of reject the hypothesis. 
+As always, further analysis would be needed, with a more complexe and detailled data set. 
+Sampling biais would be also something to take into account as well as the biology of each species.
+}
