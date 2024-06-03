@@ -1,9 +1,7 @@
-library(raster)
-library(elevatr)
 library(geodata)
 
 # Set the file path to your GeoTIFF raster 
-file_path <- "D:/rissm/Documents/Master/Biodiversity Data Analysis/Project/data/WorldEcosystem.tif"
+file_path <- "Project/data/WorldEcosystem.tif"
 
 # Read the raster GeoTIFF and create an object for it
 ecosystem_raster <- raster(file_path)
@@ -22,7 +20,7 @@ eco_values <- raster::extract(ecosystem_france, spatial_points)
 matrix_full_elev_eco <- data.frame(matrix_full_elev, eco_values)
 
 # Set the file path to your Metadata
-metadat_eco <- read.delim("D:/rissm/Documents/Master/Biodiversity Data Analysis/Project/data/WorldEcosystem.metadata.tsv")
+metadat_eco <- read.delim("Project/data/WorldEcosystem.metadata.tsv")
 
 # Integrate the metadata into the matrix full juste made before
 matrix_full_elev_eco <- merge(matrix_full_elev_eco, metadat_eco, by.x="eco_values", by.y="Value", all.x =T)

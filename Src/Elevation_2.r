@@ -1,5 +1,3 @@
-library(sf)
-library(rnaturalearth)
 library(elevatr)
 library(png)
 library(magick)
@@ -25,7 +23,7 @@ elmat <- raster_to_matrix(elevation_France_crop)
 attr(elmat, "extent") <- extent(elevation_France_crop)
 
 # add texture with a background image
-elevation.texture.map <- readPNG("D:/rissm/Documents/Master/Biodiversity Data Analysis/Project/data/image.png")
+elevation.texture.map <- readPNG("Project/data/image.png")
 
 # Create an object for each latitude and longitude data from the matrix full so containing the informations for all the species
 latitude <- matrix_full$latitude
