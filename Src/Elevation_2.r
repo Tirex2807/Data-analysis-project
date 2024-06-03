@@ -1,12 +1,12 @@
 library(sf)
 library(rnaturalearth)
 library(elevatr)
-library(raster)
 library(png)
 library(magick)
 library(ambient)
 library(rayshader)
 library(conflicted)
+library(terra)
 
 #######Cut France without overseas territorries (same as in the previous script)
 extent(France)
