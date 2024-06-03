@@ -3,10 +3,9 @@ library(rgbif)
 library(rnaturalearth)
 library(ggplot2)
 library(rinat)
-library(raster)
 library(sf)
 library(sp)
-library(terra)
+library(raster)
 
 # Create an object with the name of my species
 Cocci1 <- c("Adalia bipunctata")
