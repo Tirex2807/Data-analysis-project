@@ -1,6 +1,4 @@
 library(geodata)
-library(ggplot2)
-library(raster)
 library(gridExtra)
 ?worldclim_country
 

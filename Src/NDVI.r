@@ -1,9 +1,6 @@
 library(remotes)
 library(rgeoboundaries)
-library(sf)
-library(raster)
 library(here)
-library(ggplot2)
 library(viridis)
 library(MODIStsp)
 
