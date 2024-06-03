@@ -6,7 +6,7 @@ De plus, deux fichier sont trop lourd (supérieur à 25 MB) pour être upload su
 Il s'agit du fichier.tif metadata et du raster que l'on télécharge à l'aide de Modis. 
 Le code pour le télécharger est en commentaire dans mon code NDVI mais si vous voulez que je vous l'envoi par mail ainsi que l'autre fichier, je peux le faire, envoyez juste moi un mail. 
 
-De plus, les path des fichiers ne sont pas correct mais je n'arrive pas à les faire fonctionner autrement depuis Github
+De plus, les paths des fichiers ne sont pas correct mais je n'arrive pas à les faire fonctionner autrement depuis Github
 
 Bien cordialement, 
 
