@@ -1,5 +1,3 @@
-library(geodata)
-
 # Set the file path to your GeoTIFF raster 
 file_path <- "Project/data/WorldEcosystem.tif"
 
